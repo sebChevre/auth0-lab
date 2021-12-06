@@ -5,7 +5,7 @@ const http = require('http');
 const morgan = require('morgan');
 
 const appUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT}`;
-
+const secret = process.env.SECRET;
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -16,11 +16,13 @@ app.use(morgan('combined'));
 app.use(auth({
   auth0Logout: true,
   baseURL: appUrl,
-  secret: 'LONG_RANDOM_STRING'
+  secret: secret
 }));
 
 app.get('/', (req, res) => {
-  res.render('home',  { user: req.openid && req.openid.user });
+  console.log(req.oidc.idToken)
+  console.log(req.oidc.accessToken)
+  res.render('home',  { user: req.oidc && req.oidc.user });
 });
 
 app.get('/expenses', (req, res) => {
