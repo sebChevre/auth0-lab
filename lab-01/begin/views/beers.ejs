@@ -7,23 +7,22 @@
   <title>Identity Labs</title>
 </head>
 <body>
-<h1>Expenses Report</h1>
+<h1>Liste des bières</h1>
 <a href="/">Home</a>
-<p>Hello, there. These are your expenses:</p>
+<p>Liste des bières:</p>
 <table border="1">
   <tr>
-    <% Object.keys(expenses[0]).forEach(k => { %>
+    <% Object.keys(beers[0]).forEach(k => { %>
       <th><strong><%= k %></strong></th>
     <% }) %>
   </tr>
-  <% expenses.forEach(expense => { %>
+  <% beers.forEach(beer => { %>
     <tr>
-      <% Object.keys(expense).forEach(k => { %>
-        <td><%= expense[k] %></td>
+      <% Object.keys(beer).forEach(k => { %>
+        <td><%= beer[k] %></td>
       <% }) %>
     </tr>
   <% }) %>
 </table>
-<p>Don't spend too much.</p>
 </body>
 </html>

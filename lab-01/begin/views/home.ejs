@@ -8,14 +8,16 @@
 </head>
 <body>
   <h1>Hello World</h1>
-  <a href="/expenses">Expenses</a>
-  <% if (user) { %>
-    <div>
-      <label><%= user.name %></label>
-      <button onclick="window.location = '/logout'">
-        Log out
-      </button>
-    </div>
-  <%}%>
+  <% if(locals.user) {%>
+    <p>
+      <ul>
+    <li><a href="/profile"><%= user.name %></a></li>
+      <li><a href="/beers">Bières</a></li>
+        <li><a href="/logout">Logout</a></li>
+  <% } else { %>
+    <li><a href="/login">Login</a></li>
+  <% } %>
+</ul>
+</p>
 </body>
 </html>
