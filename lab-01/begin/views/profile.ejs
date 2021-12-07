@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Identity Labs</title>
+</head>
+<body>
+
+ <p><%= token %></p>
+<h1>Profil - <%= user.name %> - <%= user.email %> - <%= user.nickname %> </h1>
+<a href="/">Home</a>
+
+<h4>Identities:</h4>
+<p>user_id: <%= user.identities[0].user_id %></p>
+<p>uprovider: <%= user.identities[0].provider %></p>
+<p>connection: <%= user.identities[0].connection %></p>
+
+<h4>Groups:</h4>
+<% user.groups.forEach(group => { %>
+<p>Groupe: <%= group %></p>
+<% }) %>
+
+<h4>Roles:</h4>
+<% user.roles.forEach(role => { %>
+<p>Role: <%= role %></p>
+<% }) %>
+
+<h4>Permissions:</h4>
+<% user.permissions.forEach(perm => { %>
+<p>Permission: <%= perm %></p>
+<% }) %>
+</body>
+</html>
+
+<!--
+email: 'user1@oaut.lab',
+  name: 'user1@oaut.lab',
+  nickname: 'user1',
+  picture: 'https://s.gravatar.com/avatar/34838066ce1278d6b20b29d259f0d5f6?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fus.png',
+  username: 'user1',
+  app_metadata: { authorization: { permissions: [Array] } },
+  authorization: { permissions: [ 'read:reports' ] },
+  groups: [ 'Readers' ],
+  roles: [ 'Readers' ],
+  permissions: [ 'Readers' ],
+  clientID: 'IEXmOu0CTijEbcU7FtJAgzWvwj3QW5Mo',
+  created_at: '2021-12-06T21:30:09.988Z',
+  email_verified: false,
+  identities: [
+    {
+      user_id: '61ae80e1edebd10071c42190',
+      provider: 'auth0',
+      connection: 'oauthlab-wesignin',
+      isSocial: false
+    }
+  ],
+  updated_at: '2021-12-07T10:28:25.015Z',
+  user_id: 'auth0|61ae80e1edebd10071c42190',
+  user_metadata: {},
+  sub: 'auth0|61ae80e1edebd10071c42190'-->
