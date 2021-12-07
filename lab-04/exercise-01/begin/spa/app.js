@@ -2,9 +2,20 @@ const content = document.getElementById('content');
 const navbar = document.getElementById('navbar-container');
 const loadingIndicator = document.getElementById('loading-indicator');
 
+let auth0Client;
+
 window.onload = async function() {
   let requestedView = window.location.hash;
 
+  auth0Client = await createAuth0Client({
+    domain: 'sebchevre.eu.auth0.com',
+    client_id: 'tGyecr0BjPPesw8MJrINdUJ46HsxeGJx'
+  });
+
+  if (requestedView === '#callback') {
+    await auth0Client.handleRedirectCallback();
+    window.history.replaceState({}, document.title, '/');
+  }
   await loadView('#navbar', navbar);
 
   window.location.hash = requestedView;
@@ -37,6 +48,10 @@ async function loadView(viewName, container) {
 }
 
 async function allowAccess() {
+  if (await auth0Client.isAuthenticated()) {
+    return true;
+  }
   await loadView('#home', content);
   return false;
 }
+

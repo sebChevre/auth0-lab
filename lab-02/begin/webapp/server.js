@@ -27,6 +27,26 @@ app.use(
     baseURL: appUrl,
     required: false,
     auth0Logout: true,
+
+    routes: false,
+    
+    appSession: false,
+    authorizationParams: {
+      response_type: 'code id_token',
+      response_mode: 'form_post',
+      audience: process.env.API_AUDIENCE,
+      scope: 'openid profile email read:reports'
+    },
+    handleCallback: async function (req, res, next) {
+      console.log(req.openidTokens)
+      req.session.openidTokens = req.openidTokens;
+      req.session.userIdentity = req.openidTokens.claims();
+      next();
+    },
+    getUser: async function (req) {
+      return req.session.userIdentity;
+    }
+
   })
 );
 
@@ -40,9 +60,19 @@ app.get("/user", requiresAuth(), (req, res) => {
 
 app.get("/expenses", requiresAuth(), async (req, res, next) => {
   try {
-    const expenses = await request(process.env.API_URL, {
+    
+    /**const expenses = await request(process.env.API_URL, {
       json: true,
+    });*/
+    let tokenSet = req.openid.makeTokenSet(req.session.openidTokens);
+
+    console.log(tokenSet)
+
+    const expenses = await request(process.env.API_URL, {
+      headers: { authorization: "Bearer " + tokenSet.access_token },
+      json: true
     });
+
 
     res.render("expenses", {
       user: req.openid && req.openid.user,
@@ -51,6 +81,13 @@ app.get("/expenses", requiresAuth(), async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+app.get("/login", (req, res) => res.openid.login({ returnTo: "/" }));
+
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.openid.logout();
 });
 
 app.use((err, req, res, next) => {
