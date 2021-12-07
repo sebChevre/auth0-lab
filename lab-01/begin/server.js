@@ -18,6 +18,7 @@ const logger = new Console({ stdout: process.stdout, stderr: errorOutput, colorM
 
 
 const appUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT}`;
+
 const beers = [
   {
     description: 'Bière vieillie en fut de whyski',
@@ -84,8 +85,9 @@ app.get('/', (req, res) => {
 
 app.get('/profile', requiresAuth(), (req, res) => {
   
-  console.log("> user info:")
-  console.log(req.oidc.user);
+  logger.info(`[${logDate()}] - /profile`);
+  logger.info(`[${logDate()}] - userInfos`);
+  logger.info(req.oidc.user);
   var idTokenDecoded = jwt_decode(req.oidc.idToken)
   res.render('profile',{user: req.oidc.user, token: idTokenDecoded})
   
@@ -98,7 +100,6 @@ app.get('/beers', claimIncludes('permissions','biere:read'), (req, res) => {
   res.render('beers', {
     beers
   });
-  
 });
 
 app.get("/login", (req, res) => 
